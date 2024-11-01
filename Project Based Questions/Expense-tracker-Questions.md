@@ -71,3 +71,37 @@ exports.getHomePage = (req, res, next) => {
 #### Q:What is the purpose of the `uuidv4` function in this code snippet, and when would you typically use it?
 
 **Answer**:When the user sends a POST request to "/password/sendMail" EndPoint , we are generating a unique request id with `uuidv4()` , The email we sent to the user with a password reset link includes the unique request id as a parameter 
+
+#### Q:Explain what `saltRounds` signifies and how it affects the security of the hashed password.
+
+**Answer**:`saltRounds` indicates the computational cost of hashing the password. More salt rounds mean the hashing process takes longer, which increases security by making it harder for attackers to perform brute-force attacks or rainbow table attacks. However, there is a trade-off, as higher salt rounds may slow down legitimate login processes.
+
+#### Q:What potential issues could arise from using a low number of salt rounds, and how can you determine the appropriate number of salt rounds for your application?
+
+**Answer**:Using a low number of salt rounds can lead to weaker password hashes, making them easier to crack through brute-force or rainbow table attacks.
+
+To determine the appropriate number of salt rounds, consider:
+
+1. **Security Needs:** Higher salt rounds improve security but increase computation time.
+2. **Performance Impact:** Balance security with acceptable performance for user login times.
+
+A common practice is to start with 10 salt rounds and adjust based on performance testing and security requirements.
+
+#### Q:Why is it important to use an asynchronous function for password hashing in a Node.js application?
+
+**Answer**:Using an asynchronous function for password hashing is important because:
+
+1. **Non-blocking:** It prevents blocking the event loop, allowing other requests to be processed while the hashing operation is performed. This improves the application's responsiveness.
+2. **Performance:** Password hashing can be resource-intensive. Using `async` allows the server to handle multiple requests efficiently without waiting for the hashing to complete.
+
+#### Q:What are the potential risks of directly using values from `req.body` and how can they be mitigated?
+
+**Answer**:Directly using values from `req.body` can lead to security risks, such as injection attacks (SQL, NoSQL, etc.) and validation issues. To mitigate these risks, you should validate and sanitize inputs, use libraries like `express-validator`, and implement proper error handling.
+
+#### Q:How would you validate the month provided in the request body to ensure it is in a correct format before querying the database?
+
+**Answer**:Use a validation library (like `Joi`)
+
+#### Q:What security measures should be considered when handling JWTs in a real-world application?
+
+**Answer**:Helmet is a good measure for securing HTTP headers, additional security measures for handling JWTs include using HTTPS to encrypt data in transit, setting short expiration times for tokens, implementing refresh tokens for long-lived sessions, and properly validating the token on each request to ensure it hasn't been tampered with.
